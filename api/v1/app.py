@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 
 @app.teardown_appcontext
-def handle_teardown(exception):
+def handle_teardown(error):
     storage.close()
 
 
