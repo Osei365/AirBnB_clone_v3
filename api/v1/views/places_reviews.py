@@ -13,7 +13,7 @@ from models.review import Review
                  methods=['GET', 'POST'], strict_slashes=False)
 def get_reviews_by_places(place_id):
     place = storage.get(Place, place_id)
-    if city is None:
+    if place is None:
         abort(404)
     if request.method == 'POST':
         json_dic = request.get_json()
