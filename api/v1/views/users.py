@@ -11,11 +11,11 @@ def get_users():
     if request.method == 'POST':
         json_dic = request.get_json()
         if json_dic is None:
-            abort(400, 'Not a JSON')
+            abort(400, description='Not a JSON')
         if 'email' not in json_dic:
-            abort(400, 'Missing email')
+            abort(400, description='Missing email')
         if 'password' not in json_dic:
-            abort(400, 'Missing password')
+            abort(400, description='Missing password')
         obj = classes['User'](**json_dic)
         obj.save()
         return make_response(jsonify(obj.to_dict()), 201)
@@ -52,7 +52,7 @@ def put_user(user_id):
         abort(404)
     json_dict = request.get_json()
     if json_dict is None:
-        abort(400, 'Not a JSON')
+        abort(400, description='Not a JSON')
     for key, value in json_dict.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(obj, key, value)
