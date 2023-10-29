@@ -64,7 +64,8 @@ def put_review(review_id):
     if json_dict is None:
         abort(400, 'Not a JSON')
     for key, value in json_dict.items():
-        if key not in ['id', 'user_id', 'place_id', 'created_at', 'updated_at']:
+        if key not in ['id', 'user_id', 'place_id',
+                       'created_at', 'updated_at']:
             setattr(obj, key, value)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 200)
