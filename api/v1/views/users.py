@@ -54,7 +54,7 @@ def put_user(user_id):
     if json_dict is None:
         abort(400, 'Not a JSON')
     for key, value in json_dict.items():
-        if key not in ['id', 'email', 'created_at', 'updated_at']:
+        if key not in ['id', 'created_at', 'updated_at']:
             setattr(obj, key, value)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 200)
