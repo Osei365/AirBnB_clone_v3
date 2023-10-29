@@ -13,7 +13,7 @@ from models.review import Review
                  methods=['GET', 'POST'], strict_slashes=False)
 def get_reviews_by_places(place_id):
     place = storage.get(Place, place_id)
-    if city is None:
+    if place is None:
         abort(404)
     if request.method == 'POST':
         json_dic = request.get_json()
@@ -64,7 +64,8 @@ def put_review(review_id):
     if json_dict is None:
         abort(400, 'Not a JSON')
     for key, value in json_dict.items():
-        if key not in ['id', 'user_id', 'place_id', 'created_at', 'updated_at']:
+        if key not in ['id', 'user_id', 'place_id',
+                       'created_at', 'updated_at']:
             setattr(obj, key, value)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 200)
