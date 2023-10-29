@@ -40,7 +40,7 @@ def delete_user(user_id):
     if obj is not None:
         obj.delete()
         storage.save()
-        return jsonify({})
+        return make_response(jsonify({}), 200)
     abort(404)
 
 
