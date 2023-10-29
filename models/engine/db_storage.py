@@ -77,8 +77,10 @@ class DBStorage:
 
     def get(self, cls, id):
         """get a particular instance of a clas."""
-        obj = self.__session.query(cls).where(cls.id == id).first()
-        return obj
+        if cls:
+            if cls in classes.values():
+                return self.__session.query(cls).get(id)
+            return None
 
     def count(self, cls=None):
         """count ojects in a cls in storage."""
