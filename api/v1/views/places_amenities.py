@@ -17,7 +17,7 @@ def get_amenities_by_places(place_id):
     if models.storage_t == 'db':
         amenities = [obj.to_dict() for obj in place.amenities]
     else:
-        ids = place.amenity_ids
+        ids = place.amenity_ids.copy()
         amenities = [storage.get(Amenity, a_id).to_dict() for a_id in ids]
     return jsonify(amenities)
 
