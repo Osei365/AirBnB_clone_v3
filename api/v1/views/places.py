@@ -105,10 +105,10 @@ def place_search():
                 r = [p.to_dict() for p in ps if p.to_dict() not in result]
                 result.extend(r)
 
-    if len(result) == 0:
-        places = storage.all(Place)
-        result.extend([obj.to_dict() for obj in places.values()])
     if amenity_lists and len(amenity_lists) > 0:
+        if len(result) == 0:
+            places = storage.all(Place)
+            result.extend([obj.to_dict() for obj in places.values()])
         amenities = [storage.get(Amenity, a_id) for a_id in amenity_lists]
         new_result = []
         for place_dict in result:
