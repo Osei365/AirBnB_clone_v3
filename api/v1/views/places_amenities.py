@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """place and amenities."""
-
+import models
 from flask import jsonify, make_response, abort
 from api.v1.views import app_views
 from models import storage
@@ -14,7 +14,11 @@ def get_amenities_by_places(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    amenities = [obj.to_dict() for obj in place.amenities]
+    if models.storage_t == 'db':
+        amenities = [obj.to_dict() for obj in place.amenities]
+    else:
+        ids = place.amenity_ids
+        amenities = [storage.get(Amenity, a_id).to_dict() for a_id in ids]
     return jsonify(amenities)
 
 
@@ -27,7 +31,10 @@ def delete_amenities_by_place(place_id, amenity_id):
         abort(404)
     if amenity not in place.amenities:
         abort(404)
-    place.amenities.remove(amenity)
+    if models.storage_t == 'db':
+        place.amenities.remove(amenity)
+    else:
+        place.amenity_ids.remove(amenity_id)
     storage.save()
     return jsonify({})
 
@@ -41,6 +48,9 @@ def post_amenities_by_place(place_id, amenity_id):
         abort(404)
     if amenity in place.amenities:
         return jsonify(amenity.to_dict())
-    place.amenities.append(amenity)
+    if models.storage_t == 'db':
+        place.amenities.append(amenity)
+    else:
+        place.amenity_ids.append(amenity_id)
     storage.save()
     return make_response(jsonify(amenity.to_dict()), 201)
