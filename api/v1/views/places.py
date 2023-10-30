@@ -118,5 +118,8 @@ def place_search():
                     if amenity not in place.amenities:
                         result.remove(place_dict)
                         break
-
-    return jsonify(result)
+    places = []
+    for dic in result:
+        dic.pop('amenities', None)
+        places.append(dic)
+    return jsonify(places)
