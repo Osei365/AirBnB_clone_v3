@@ -45,9 +45,9 @@ def delete_amenities_by_place(place_id, amenity_id):
                  methods=['POST'], strict_slashes=False)
 def post_amenities_by_place(place_id, amenity_id):
     place = storage.get(Place, place_id)
-    amenity = storage.get(Amenity, amenity_id)
     if not place:
         abort(404)
+    amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
     if models.storage_t == 'db':
