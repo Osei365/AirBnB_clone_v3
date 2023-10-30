@@ -78,18 +78,19 @@ def place_search():
         abort(400, 'Not a JSON')
 
     result = []
-    all_keys = [len(arr) == 0 for arr in json_dict.values()]
+    states_list = json_dict.get('states', [])
+    city_lists = json_dict.get('cities', [])
+    amenity_lists = json_dict.get('amenities', [])
+    all_keys = [len(states_list) == 0,
+                len(city_lists) == 0,
+                len(amenity_lists == 0]
 
     if len(json_dict) == 0 or all(all_keys):
         places = storage.all(Place)
         result.extend([obj.to_dict() for obj in places.values()])
         return jsonify(result)
 
-    states_list = json_dict.get('states')
-    city_lists = json_dict.get('cities')
-    amenity_lists = json_dict.get('amenities')
-
-    if states_list and len(states_list) > 0:
+    if len(states_list) > 0:
         for state_id in states_list:
             state = storage.get(State, state_id)
             if state:
@@ -97,7 +98,7 @@ def place_search():
                     if c:
                         result.extend([place.to_dict() for place in c.places])
 
-    if city_lists and len(city_lists) > 0:
+    if len(city_lists) > 0:
         for city_id in city_lists:
             c = storage.get(City, city_id)
             if c:
@@ -105,7 +106,7 @@ def place_search():
                 r = [p.to_dict() for p in ps if p.to_dict() not in result]
                 result.extend(r)
 
-    if amenity_lists and len(amenity_lists) > 0:
+    if len(amenity_lists) > 0:
         if len(result) == 0:
             places = storage.all(Place)
             result.extend([obj.to_dict() for obj in places.values()])
