@@ -81,9 +81,8 @@ def place_search():
     states_list = json_dict.get('states', [])
     city_lists = json_dict.get('cities', [])
     amenity_lists = json_dict.get('amenities', [])
-    all_keys = [len(states_list) == 0,
-                len(city_lists) == 0,
-                len(amenity_lists == 0]
+    all_keys = [state_list, city_lists, amenity_lists]
+    all_keys = [key == 0 for key in all_keys]
 
     if len(json_dict) == 0 or all(all_keys):
         places = storage.all(Place)
