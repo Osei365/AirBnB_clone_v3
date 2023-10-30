@@ -50,7 +50,7 @@ def post_amenities_by_place(place_id, amenity_id):
         abort(404)
     if models.storage_t == 'db':
         if amenity in place.amenities:
-           return jsonify(amenity.to_dict())
+            return jsonify(amenity.to_dict())
         place.amenities.append(amenity)
     else:
         if amenity_id in place.amenity_ids:
