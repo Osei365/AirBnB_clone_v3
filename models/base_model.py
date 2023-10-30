@@ -58,10 +58,10 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
-    def to_dict(self):
+    def to_dict(self, pwd_hash=True):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
-        if models.storage.__class__.__name__ != 'FileStorage':
+        if pwd_hash:
             if 'password' in new_dict:
                 del new_dict['password']
         if "created_at" in new_dict:
