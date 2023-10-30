@@ -119,4 +119,4 @@ def place_search():
         dic = p.to_dict()
         dic.pop('amenities', None)
         places.append(dic)
-    return jsonify(result)
+    return jsonify(places)
