@@ -114,4 +114,9 @@ def place_search():
                 amenity = storage.get(Amenity, aemnity_id)
                 if amenity not in place.amenities:
                     result.remove(place_dict)
+    places = []
+    for p in result:
+        dic = p.to_dict()
+        dic.pop('amenities', None)
+        places.append(dic)
     return jsonify(result)
