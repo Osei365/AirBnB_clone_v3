@@ -108,18 +108,12 @@ def place_search():
     if len(result) == 0:
         places = storage.all(Place)
         result.extend([obj.to_dict() for obj in places.values()])
-    new_result = result.copy()
     if amenity_lists and len(amenity_lists) > 0:
-        for place_dict in new_result:
+        amenities = [storage.get(Amenity, a_id) for a_id in amenity_lists]
+        new_result = []
+        for place_dict in result:
             place = storage.get(Place, place_dict['id'])
-            for amenity_id in amenity_lists:
-                amenity = storage.get(Amenity, aemnity_id)
-                if amenity:
-                    if amenity not in place.amenities:
-                        result.remove(place_dict)
-                        break
-    places = []
-    for dic in result:
-        dic.pop('amenities', None)
-        places.append(dic)
-    return jsonify(places)
+            if all([am in place.amenities for am in amenities]):
+                new_result.append(place.to_dict())
+        result = new_result.copy()
+    return jsonify(result)
