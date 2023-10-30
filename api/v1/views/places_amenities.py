@@ -7,7 +7,8 @@ from models import storage
 from models.place import Place
 from models.amenity import Amenity
 
-@app_views.route('/places/<place_id>/amenities', methods =['GET'],
+
+@app_views.route('/places/<place_id>/amenities', methods=['GET'],
                  strict_slashes=False)
 def get_amenities_by_places(place_id):
     place = storage.get(Place, place_id)
