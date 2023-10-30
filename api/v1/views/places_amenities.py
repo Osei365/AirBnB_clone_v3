@@ -13,7 +13,6 @@ def get_amenities_by_places(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    if models.storage_t != 'db':
     amenities = [obj.to_dict() for obj in place.amenities]
     return jsonify(amenities)
 
