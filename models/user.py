@@ -32,9 +32,3 @@ class User(BaseModel, Base):
             m.update(bytes(kwargs['password']))
             kwargs['password'] = m.hexdigest()
         super().__init__(*args, **kwargs)
-
-    def __setattr__(self, key, value):
-        if key == 'password':
-            m = hashlib.md5()
-            m.update(str.encode(value))
-            self.__dict__[key] = m.hexdigest()
