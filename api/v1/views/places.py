@@ -81,10 +81,9 @@ def place_search():
     states_list = json_dict.get('states', [])
     city_lists = json_dict.get('cities', [])
     amenity_lists = json_dict.get('amenities', [])
-    all_keys = [states_list, city_lists, amenity_lists]
-    all_keys = [key == 0 for key in all_keys]
+    all_keys = (states_list or city_lists or amenity_lists)
 
-    if json_dict is None or all(all_keys):
+    if json_dict is None or not all_keys:
         places = storage.all(Place)
         result.extend([obj.to_dict() for obj in places.values()])
         return jsonify(result)
