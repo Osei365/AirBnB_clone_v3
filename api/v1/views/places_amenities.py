@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """place and amenities."""
 import models
+import os
 from flask import jsonify, make_response, abort
 from api.v1.views import app_views
 from models import storage
@@ -14,7 +15,7 @@ def get_amenities_by_places(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    if models.storage_t == 'db':
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         amenities = [obj.to_dict() for obj in place.amenities]
     else:
         ids = place.amenity_ids.copy()
@@ -26,10 +27,12 @@ def get_amenities_by_places(place_id):
                  methods=['GET'], strict_slashes=False)
 def delete_amenities_by_place(place_id, amenity_id):
     place = storage.get(Place, place_id)
-    amenity = storage.get(Amenity, amenity_id)
-    if place is None or amenity is None:
+    if place is None:
         abort(404)
-    if models.storage_t == 'db':
+    amenity = storage.get(Amenity, amenity_id)
+    if amenity is None:
+        abort(404)
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         if amenity not in place.amenities:
             abort(404)
         place.amenities.remove(amenity)
@@ -50,7 +53,7 @@ def post_amenities_by_place(place_id, amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
-    if models.storage_t == 'db':
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         if amenity in place.amenities:
             return make_response(jsonify(amenity.to_dict()), 200)
         place.amenities.append(amenity)
