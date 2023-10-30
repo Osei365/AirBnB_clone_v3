@@ -117,5 +117,6 @@ def place_search():
                 if amenity:
                     if amenity not in place.amenities:
                         result.remove(place_dict)
+                        break
 
     return jsonify(result)
