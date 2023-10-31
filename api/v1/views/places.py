@@ -85,7 +85,7 @@ def place_search():
 
     if json_dict is None or not all_keys:
         places = storage.all(Place)
-        result.extend([obj.to_dict() for obj in places.values()])
+        result = [obj.to_dict() for obj in places.values()]
         return jsonify(result)
 
     if states_list:
@@ -108,11 +108,7 @@ def place_search():
     if amenity_lists:
         if len(result) == 0:
             result = storage.all(Place).values()
-        amenities = [storage.get(Amenity, a_id) for a_id in amenity_lists]
-        new_result = []
-        for place in result:
-            if all([am in place.amenities for am in amenities]):
-                new_result.append(place)
-        result = new_result.copy()
+        ams = [storage.get(Amenity, a_id) for a_id in amenity_lists]
+        result = [p for p in result if all([am in p.amenities for am in ams])]
     places = [place.to_dict() for place in result]
     return jsonify(places)
