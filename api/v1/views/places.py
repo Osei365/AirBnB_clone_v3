@@ -94,25 +94,24 @@ def place_search():
             if state:
                 for c in state.cities:
                     if c:
-                        result.extend([place.to_dict() for place in c.places])
+                        result.extend([place for place in c.places])
 
     if len(city_lists) > 0:
         for city_id in city_lists:
             c = storage.get(City, city_id)
             if c:
                 ps = c.places
-                r = [p.to_dict() for p in ps if p.to_dict() not in result]
+                r = [p for p in ps if p not in result]
                 result.extend(r)
 
     if len(amenity_lists) > 0:
         if len(result) == 0:
-            places = storage.all(Place)
-            result.extend([obj.to_dict() for obj in places.values()])
+            result = storage.all(Place).values()
         amenities = [storage.get(Amenity, a_id) for a_id in amenity_lists]
         new_result = []
-        for place_dict in result:
-            place = storage.get(Place, place_dict['id'])
+        for place in result:
             if all([am in place.amenities for am in amenities]):
-                new_result.append(place.to_dict())
+                new_result.append(place)
         result = new_result.copy()
-    return jsonify(result)
+    places = [place.to_dict() for place in result]
+    return jsonify(places)
