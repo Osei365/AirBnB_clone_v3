@@ -76,7 +76,7 @@ def place_search():
     if request.get_json() is None:
         abort(400, 'Not a JSON')
 
-    json_dic = request.get_json()
+    json_dict = request.get_json()
     states_list = json_dict.get('states', [])
     city_lists = json_dict.get('cities', [])
     amenity_lists = json_dict.get('amenities', [])
