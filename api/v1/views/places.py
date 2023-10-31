@@ -77,7 +77,6 @@ def place_search():
     if json_dict is None:
         abort(400, 'Not a JSON')
 
-    result = []
     states_list = json_dict.get('states', [])
     city_lists = json_dict.get('cities', [])
     amenity_lists = json_dict.get('amenities', [])
@@ -88,6 +87,7 @@ def place_search():
         result = [obj.to_dict() for obj in places.values()]
         return jsonify(result)
 
+    result = []
     if states_list:
         for state_id in states_list:
             state = storage.get(State, state_id)
