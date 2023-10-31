@@ -94,15 +94,16 @@ def place_search():
             if state:
                 for c in state.cities:
                     if c:
-                        result.extend([place for place in c.places])
+                        for place in c.places:
+                            result.append(place)
 
     if len(city_lists) > 0:
         for city_id in city_lists:
             c = storage.get(City, city_id)
             if c:
-                ps = c.places
-                r = [p for p in ps if p not in result]
-                result.extend(r)
+                for place in c.places:
+                    if place not in result:
+                        result.append(place)
 
     if len(amenity_lists) > 0:
         if len(result) == 0:
